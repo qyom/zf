@@ -85,6 +85,9 @@ class Zend_Mail extends Zend_Mime_Message
      */
     protected $_from = null;
 
+    // Hacked by HH 
+    protected $_replyTo = null;
+
     /**
      * To: addresses
      * @var array
@@ -612,6 +615,31 @@ class Zend_Mail extends Zend_Mime_Message
         return $this;
     }
 
+    /**
+     * Set Reply-To Header
+     *
+     * @param string $email
+     * @param string $name
+     * @return Zend_Mail
+     * @throws Zend_Mail_Exception if called more than one time
+     */
+    public function setReplyTo($email, $name = null)
+    {
+        if (null !== $this->_replyTo) {
+            /**
+             * @see Zend_Mail_Exception
+             */
+            require_once 'Zend/Mail/Exception.php';
+            throw new Zend_Mail_Exception('Reply-To Header set twice');
+        }
+
+        $email = $this->_filterEmail($email);
+        $name  = $this->_filterName($name);
+        $this->_replyTo = $email;
+        $this->_storeHeader('Reply-To', $this->_formatAddress($email, $name), true);
+
+        return $this;
+    }
     /**
      * Returns the sender of the mail
      *
