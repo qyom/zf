@@ -1,0 +1,8 @@
+{
+    "name": "qyom/zf",
+    "description": "ZF v1. improved a bit",
+    "type": "library",
+    "keywords": [
+        "zend framework",
+    ]    
+}
